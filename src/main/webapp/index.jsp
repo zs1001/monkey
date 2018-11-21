@@ -7,6 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href=#>hello world</a>
+
+<form action="${pageContext.request.contextPath}/lottery/findLotteryByExpect" method="post">
+
+<input type="submit" value="GO!">
+</form>
+
+
 </body>
 </html> 

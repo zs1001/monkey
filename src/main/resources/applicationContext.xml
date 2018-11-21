@@ -20,9 +20,9 @@
 
 	<!-- 读取db.properties -->
 	<context:property-placeholder
-		location="classpath:db.properties" />
+		location="classpath:db.properties" ignore-unresolvable="true"/>
 
-	<!-- 配置数据源 -->
+	<!--1. 配置数据源 -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource">
 		<!-- 数据库驱动 -->
@@ -34,27 +34,37 @@
 		<!-- 连接数据库的密码 -->
 		<property name="password" value="${jdbc.password}" />
 		<!-- 连接数据库的最大连接数 -->
-		<property name="maxTotal" value="${jdbc.maxTotal}" />
+<!-- 		<property name="maxTotal" value="${jdbc.maxTotal}" /> -->
 		<!-- 连接数据库的最大空闲连接 -->
-		<property name="maxIdle" value="${jdbc.maxIdle}" />
+<!-- 		<property name="maxIdle" value="${jdbc.maxIdle}" /> -->
 		<!-- 连接数据库的初始化连接数 -->
-		<property name="initialSize" value="${jdbc.initialSize}" />
+<!-- 		<property name="initialSize" value="${jdbc.initialSize}" /> -->
 	</bean>
-
-	<!-- 事物管理器，依赖于数据源 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<!-- 开启事物注解 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
-	<!-- 配置MyBatis工厂 SqlSessionFactory -->
+	
+	<!-- 2.配置MyBatis工厂 SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<!-- 注入数据源 -->
 		<property name="dataSource" ref="dataSource"/>
 		<!-- 指定MyBatis核心配置文件位置 -->
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
 	</bean>
+	
+	<!-- 3. mybatis自动扫描加载Sql映射文件/接口 : MapperScannerConfigurer sqlSessionFactory
+   			basePackage:指定sql映射文件/接口所在的包（自动扫描）
+       -->
+       <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+           <property name="basePackage" value="pres.shen.five.dao"></property>
+           <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+      </bean>
+	
+	
+	<!--4. 事物管理器，依赖于数据源 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 5.开启事物注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
 
 </beans>
