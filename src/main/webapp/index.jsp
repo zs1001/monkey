@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/lottery/findLotteryByExpect" method="post">
+<form action="${pageContext.request.contextPath}/findLotteryByExpect" method="post">
 
 <input type="submit" value="GO!">
 </form>

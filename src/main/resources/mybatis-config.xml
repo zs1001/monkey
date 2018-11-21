@@ -7,7 +7,7 @@
 	<typeAliases>
 		<package name="pres.shen.five.entity" />
 	</typeAliases>
-	<mappers>
-        <mapper resource="mapper/LotteryDao.xml" />
-    </mappers>
+<!-- 	<mappers> -->
+<!--         <mapper resource="mapper/LotteryDao.xml" /> -->
+<!--     </mappers> -->
 </configuration>

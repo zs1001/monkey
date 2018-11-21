@@ -11,7 +11,7 @@ import pres.shen.five.service.LotteryService;
 
 
 
-@Controller("lottery")
+@Controller
 public class LotteryController {
 	
 	
@@ -23,10 +23,20 @@ public class LotteryController {
 	 */
 	@RequestMapping(value="/findLotteryByExpect",method = RequestMethod.POST)
 	public String findLotteryByExpect(String expect,Model model) {
-		System.out.println("-----------。1"+expect);
+		System.out.println("-----------銆�1"+expect);
 		Lottery lottery = lotteryService.findLotteryByExpect(expect);
 		model.addAttribute("lttery",lottery);
 		return "Lottery";
 		
 	}
+	
+	@RequestMapping("/tx")
+	public String findLotteryByExpect1(String expect,Model model) {
+		System.out.println("-----------銆�1"+expect);
+		Lottery lottery = lotteryService.findLotteryByExpect(expect);
+		model.addAttribute("lttery",lottery);
+		return "Lottery";
+		
+	}
+	
 }
