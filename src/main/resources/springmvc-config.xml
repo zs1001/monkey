@@ -17,6 +17,10 @@
             http://www.springframework.org/schema/context 
             http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+	<context:component-scan base-package="pres.shen.five.service"/> 
+     <context:component-scan base-package="pres.shen.five.service.impl"/> 
+    <context:component-scan base-package="pres.shen.five.dao"/> 
+
 	<!-- 注解扫描包 -->
 	<context:component-scan base-package="pres.shen.five.controller" />
 	

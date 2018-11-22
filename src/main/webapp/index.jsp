@@ -13,6 +13,7 @@
 <input type="submit" value="GO!">
 </form>
 
+<a href=${pageContext.request.contextPath}/findLotteryByExpect> 123 </a>
 
 </body>
 </html> 
