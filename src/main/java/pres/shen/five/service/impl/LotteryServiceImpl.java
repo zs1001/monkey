@@ -11,6 +11,8 @@ import pres.shen.five.service.LotteryService;
 
 
 
+
+
 @Service
 @Transactional
 public class LotteryServiceImpl implements LotteryService {
@@ -20,8 +22,8 @@ public class LotteryServiceImpl implements LotteryService {
 
 	public Lottery findLotteryByExpect(String expect) {
 		System.out.println("--------2");
-		Lottery Lottery = lotteryDao.findLotteryByExpect(expect);
-		return Lottery;
+		Lottery lottery = lotteryDao.findLotteryByExpect(expect);
+		return lottery;
 	}
 
 }
