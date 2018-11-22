@@ -8,11 +8,6 @@ import pres.shen.five.dao.LotteryDao;
 import pres.shen.five.entity.Lottery;
 import pres.shen.five.service.LotteryService;
 
-
-
-
-
-
 @Service
 @Transactional
 public class LotteryServiceImpl implements LotteryService {

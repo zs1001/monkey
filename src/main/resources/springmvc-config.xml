@@ -17,19 +17,17 @@
             http://www.springframework.org/schema/context 
             http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<context:component-scan base-package="pres.shen.five.service"/> 
-     <context:component-scan base-package="pres.shen.five.service.impl"/> 
-    <context:component-scan base-package="pres.shen.five.dao"/> 
 
-	<!-- 注解扫描包 -->
+	<!--1. 配置扫描器（注解扫描包） -->
 	<context:component-scan base-package="pres.shen.five.controller" />
 	
+	<!--2. 注解驱动：配置处理器映射器和适配器 -->
+	 <mvc:annotation-driven/>
+	 
 	<mvc:default-servlet-handler />
 
-	<!-- 开启注解 -->
-	 <mvc:annotation-driven/>
 
-	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
+	<!--3. 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
 	<mvc:resources mapping="/img/**" location="/img/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
@@ -37,7 +35,7 @@
 
 
 
-	<!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+	<!--4. 定义跳转的文件的前后缀 ，视图模式配置 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->

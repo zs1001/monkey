@@ -21,11 +21,10 @@
      <context:component-scan base-package="pres.shen.five.service.impl"/> 
     <context:component-scan base-package="pres.shen.five.dao"/> 
     
-	<!-- 读取db.properties -->
+	<!--1. 读取db.properties -->
 	<context:property-placeholder
-		location="classpath:db.properties" ignore-unresolvable="true"/>
-
-	<!--1. 配置数据源 -->
+		location="classpath:db.properties" />
+	<!--配置数据源 -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource">
 		<!-- 数据库驱动 -->
@@ -44,7 +43,28 @@
 <!-- 		<property name="initialSize" value="${jdbc.initialSize}" /> -->
 	</bean>
 	
-	<!-- 2.配置MyBatis工厂 SqlSessionFactory -->
+	<!--2. 事物管理器，依赖于数据源 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	 <!--3. 配置事务策略 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="find*" propagation="REQUIRED"  read-only="true"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+	<!-- 	切面 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" 
+			pointcut = "execution(* pres.shen.five.service.*.*(..))" />
+	</aop:config>
+	
+	<!-- 4.配置MyBatis工厂 SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<!-- 注入数据源 -->
 		<property name="dataSource" ref="dataSource"/>
@@ -52,22 +72,11 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
 	</bean>
 	
-	<!-- 3. mybatis自动扫描加载Sql映射文件/接口 : MapperScannerConfigurer sqlSessionFactory
-   			basePackage:指定sql映射文件/接口所在的包（自动扫描）
-       -->
-       <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<!-- 5.接口开发扫描dao包 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
            <property name="basePackage" value="pres.shen.five.dao"></property>
-           <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
       </bean>
+	<!-- 配置扫描@Service 注解 -->
+	<context:component-scan base-package="pres.shen.five.service"/>
 	
-	
-	<!--4. 事物管理器，依赖于数据源 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<!-- 5.开启事物注解 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
-
 </beans>
