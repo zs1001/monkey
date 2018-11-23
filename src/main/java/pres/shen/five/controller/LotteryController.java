@@ -21,7 +21,7 @@ public class LotteryController {
 	/**
 	 * 
 	 */
-	@RequestMapping(value="/findLotteryByExpect",method = RequestMethod.POST)
+	@RequestMapping(value="/findLotteryByExpect.action",method = RequestMethod.POST)
 	public String findLotteryByExpect(String expect,Model model) {
 		System.out.println("-----------銆�1"+expect);
 		Lottery lottery = lotteryService.findLotteryByExpect(expect);
