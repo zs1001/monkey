@@ -36,10 +36,15 @@
 
 
 	<!--4. 定义跳转的文件的前后缀 ，视图模式配置 -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
+	<!-- 配置多视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/jsp/"/>
+					<property name="suffix" value=".jsp"/>
+				</bean>
+			</list>
+		</property>
 	</bean>
 </beans>

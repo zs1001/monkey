@@ -1,82 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context.xsd">
 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-      http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-      http://www.springframework.org/schema/context
-      http://www.springframework.org/schema/context/spring-context-4.3.xsd
-      http://www.springframework.org/schema/aop
-      http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-      http://www.springframework.org/schema/tx
-      http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
-      http://www.springframework.org/schema/mvc
-      http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
-	<context:component-scan base-package="pres.shen.five.service"/> 
-     <context:component-scan base-package="pres.shen.five.service.impl"/> 
-    <context:component-scan base-package="pres.shen.five.dao"/> 
-    
-	<!--1. 读取db.properties -->
-	<context:property-placeholder
-		location="classpath:db.properties" />
-	<!--配置数据源 -->
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp2.BasicDataSource">
-		<!-- 数据库驱动 -->
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<!-- 连接数据库的url -->
-		<property name="url" value="jdbc:mysql://localhost:3306/five?characterEncoding=utf-8&amp;serverTimezone=GMT%2B8" />
-		<!-- 连接数据库的用户名 -->
-		<property name="username" value="root" />
-		<!-- 连接数据库的密码 -->
-		<property name="password" value="123456" />
-		<!-- 连接数据库的最大连接数 -->
-<!-- 		<property name="maxTotal" value="${jdbc.maxTotal}" /> -->
-		<!-- 连接数据库的最大空闲连接 -->
-<!-- 		<property name="maxIdle" value="${jdbc.maxIdle}" /> -->
-		<!-- 连接数据库的初始化连接数 -->
-<!-- 		<property name="initialSize" value="${jdbc.initialSize}" /> -->
-	</bean>
-	
-	<!--2. 事物管理器，依赖于数据源 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	 <!--3. 配置事务策略 -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <context:component-scan base-package="pres.shen.five.service"/>
+    <context:component-scan base-package="pres.shen.five.dao"/>
+    <context:annotation-config/>
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--JNDI获取数据源(使用dbcp连接池)-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" scope="singleton">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <!--<property name="initialSize" value="${initialSize}"/>-->
+        <!--<property name="maxActive" value="${maxActive}"/>-->
+        <!--<property name="maxIdle" value="${maxIdle}"/>-->
+        <!--<property name="minIdle" value="${minIdle}"/>-->
+        <!--<property name="maxWait" value="${maxWait}"/>-->
+        <!--<property name="removeAbandoned" value="${removeAbandoned}"/>-->
+        <!--<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>-->
+        <!--<property name= "testWhileIdle" value="true"/>-->
+        <!--<property name= "timeBetweenEvictionRunsMillis" value="60000"/>-->
+        <!--<property name= "testOnBorrow" value="false"/>-->
+        <!--<property name= "testOnReturn" value="false"/>-->
+        <!--<property name= "validationQuery" value="select 1"/>-->
+        <!--<property name= "numTestsPerEvictionRun" value="${maxActive}"/>-->
+    </bean>
+
+    <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"-->
+    <!--init-method="init" destroy-method="close">-->
+    <!--<property name="driverClassName" value="${driver}" />-->
+    <!--<property name="url" value="${url}" />-->
+    <!--<property name="username" value="${user}" />-->
+    <!--<property name="password" value="${password}" />-->
+    <!--&lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;-->
+    <!--</bean>-->
+
+
+    <!-- 事务管理   -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 配置mybatis SqlSessionFactoryBean -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <aop:aspectj-autoproxy/>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut expression="execution(* *pres.shen.five.service..*(..))" id="transService"/>
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="transService"/>
+    </aop:config>
+
+    <tx:advice id="myAdvice" transaction-manager="txManager">
         <tx:attributes>
-            <tx:method name="find*" propagation="REQUIRED"  read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="save*" propagation="REQUIRED"/>
             <tx:method name="update*" propagation="REQUIRED"/>
             <tx:method name="delete*" propagation="REQUIRED"/>
-            <tx:method name="*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
         </tx:attributes>
     </tx:advice>
-	<!-- 	切面 -->
-	<aop:config>
-		<aop:advisor advice-ref="txAdvice" 
-			pointcut = "execution(* pres.shen.five.service.*.*(..))" />
-	</aop:config>
-	
-	<!-- 4.配置MyBatis工厂 SqlSessionFactory -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- 注入数据源 -->
-		<property name="dataSource" ref="dataSource"/>
-		<!-- 指定MyBatis核心配置文件位置 -->
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
-	</bean>
-	
-	<!-- 5.接口开发扫描dao包 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-           <property name="basePackage" value="pres.shen.five.dao"></property>
-      </bean>
-	<!-- 配置扫描@Service 注解 -->
-	<context:component-scan base-package="pres.shen.five.service"/>
-	
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="pres.shen.five.dao"/>
+    </bean>
+
 </beans>

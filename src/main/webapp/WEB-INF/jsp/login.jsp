@@ -9,7 +9,7 @@
 <body>
 <a href=/findLotteryByExpect>login</a>
 
-<form action="${pageContext.request.contextPath}/findLotteryByExpect.action" method="post">
+<form action="${pageContext.request.contextPath}/admin/findLotteryByExpect.action" method="post">
 
 <input type="submit" value="GO!">
 </form>
