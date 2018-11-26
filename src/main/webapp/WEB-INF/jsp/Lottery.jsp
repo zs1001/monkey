@@ -10,10 +10,10 @@
 <h1>数据展示</h1>
 <table border=1>
     <tr>
-        <td>${lottery.expect}</td>
-        <td>${lottery.opencode}</td>
-        <td>${lottery.opentimestamp}</td>
-        <td>${lottery.opentime}</td>
+        <td>${lotery.expect}</td>
+        <td>${lotery.opencode}</td>
+        <td>${lotery.opentimestamp}</td>
+        <td>${lotery.opentime}</td>
     </tr>
 </table>
 </body>
