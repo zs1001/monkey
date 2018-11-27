@@ -17,9 +17,9 @@
       http://www.springframework.org/schema/mvc
       http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
-	<context:component-scan base-package="pres.shen.five.service"/> 
-     <context:component-scan base-package="pres.shen.five.service.impl"/> 
-    <context:component-scan base-package="pres.shen.five.dao"/> 
+	<context:component-scan base-package="pres.shen.five.service"/>
+    <context:component-scan base-package="pres.shen.five.dao"/>
+    <context:annotation-config/>
     
 	<!--1. 读取db.properties -->
 	<context:property-placeholder

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<a>lottery.jsp</a>
 	<table border=1>
 		<tr>
 			<td>${lottery.expect}</td>

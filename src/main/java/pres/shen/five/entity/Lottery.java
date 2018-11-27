@@ -1,15 +1,16 @@
 package pres.shen.five.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Lottery {
-	//开奖期号
+public class Lottery implements Serializable{
+	//寮�濂栨湡鍙�
 	private String expect;
-	//开奖号码
+	//寮�濂栧彿鐮�
 	private String opencode;
-	//时间戳
+	//鏃堕棿鎴�
 	private String opentimestamp;
-	//开奖时间
+	//寮�濂栨椂闂�
 	private Date opentime;
 	
 	
