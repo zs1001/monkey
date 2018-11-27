@@ -25,7 +25,7 @@ public class LotteryController {
 	public String findLotteryByExpect(String expect,Model model) {
 		System.out.println("-----------銆�1"+expect);
 		Lottery lottery = lotteryService.findLotteryByExpect(expect);
-		model.addAttribute("lotery",lottery);
+		model.addAttribute("lottery",lottery);
 		return "Lottery";
 		
 	}
@@ -34,7 +34,7 @@ public class LotteryController {
 	public String findLotteryByExpect1(String expect,Model model) {
 		System.out.println("-----------銆�1"+expect);
 		Lottery lottery = lotteryService.findLotteryByExpect(expect);
-		model.addAttribute("lotery",lottery);
+		model.addAttribute("lottery",lottery);
 		return "Lottery";
 		
 	}

@@ -17,7 +17,10 @@ public class LotteryServiceImpl implements LotteryService {
 
 	public Lottery findLotteryByExpect(String expect) {
 		System.out.println("--------2");
-		Lottery lottery = lotteryDao.findLotteryByExpect(expect);
+		Lottery lottery = lotteryDao.findLotteryByExpect("20181024008");
+		System.out.println(lottery.getExpect());
+		System.out.println(lottery.getOpencode());
+		System.out.println(lottery.getOpentime());
 		return lottery;
 	}
 
