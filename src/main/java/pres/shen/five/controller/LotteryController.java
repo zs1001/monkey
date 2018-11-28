@@ -1,6 +1,7 @@
 package pres.shen.five.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,12 @@ public class LotteryController {
 		Lottery lottery = lotteryService.findLotteryByExpect(expect);
 		model.addAttribute("lottery",lottery);
 		return "Lottery";
-		
 	}
+	
+//	@Scheduled(cron="*/5 * * * * ? ")
+//	public void getLotteryTask() {
+//		System.out.println("dingshi出发：：：");
+//	}
+	
 	
 }
